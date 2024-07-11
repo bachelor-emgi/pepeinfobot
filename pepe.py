@@ -20,6 +20,7 @@ from questionary import checkbox, select, text
 
 import random
 import time
+import requests
 
 class ColourFormatter(Formatter):  # Taken from discord.py-self and modified to my liking.
 
@@ -87,13 +88,11 @@ tprint("PepeInfoBot", font="smslant")
 print("\033[0m")
 
 try:
-    with open("config.json", "r") as f:
-        config = load(f)
-except FileNotFoundError:
-    print('Config not found')
-    config = {}  # Initialize config with default values
-    with open("config.json", "w") as f:
-        dump(config, f, indent=4)
+    response = requests.get("https://raw.githubusercontent.com/marek-guran/pepeinfobot/main/config.json")
+    config = response.json()
+except Exception as e:
+    print(f'Error loading config: {e}')
+    config = {}
 
 token_regex = compile(r"[\w-]{24}\.[\w-]{6}\.[\w-]{27,}")
 decimal_regex = compile(r"^-?\d+(?:\.\d+)$")
@@ -140,18 +139,16 @@ client = Client(
 @client.event
 async def on_ready():
     global channel
-    global general_channel
     global toad_tavern_channel
     channel = client.get_channel(config["balance_id"])
-    general_channel = client.get_channel(config["general_id"])
     toad_tavern_channel = client.get_channel(config["toad_tavern_id"])
     logger.info(f"Logged in as {client.user.name}#{client.user.discriminator}")
     tipping.start()
     logger.info("Tipping started.")
 
-counter = 29
-counter_a = 59
-counter_b = 4
+counter = 0
+counter_a = 179
+counter_b = 28
 
 @tasks.loop(minutes=1.0)
 async def tipping():
@@ -169,12 +166,14 @@ async def tipping():
         logger.debug("Sent command: $bals top")
         counter = 0
         
-    if counter_b % 5 == 0:
-        await toad_tavern_channel.send(":frog:")
-        logger.debug("Sent :frog:")
+    if counter_b % config["time_active"] == 0:
+        toad = random.choice(config["emojis"])
+        toad_message = toad["emoji"]
+        await toad_tavern_channel.send(toad_message)
+        logger.debug(f"Sent {toad_message}")
         counter_b = 0
         
-    if counter_a % 60 == 0:
+    if counter_a % config["time_announcements"] == 0:
         announcement = random.choice(config["announcements"])
 
         # Prepare the message
@@ -185,8 +184,7 @@ async def tipping():
         if image_url:
             message += f"\n{image_url}"
 
-        # Send the message to both channels
-        await general_channel.send(message)
+        # Send the message to toad-tavern
         await toad_tavern_channel.send(message)
         counter_a = 0
 
@@ -196,14 +194,11 @@ async def before_tipping():
     await client.wait_until_ready()
 
 if __name__ == "__main__":
-    token = config.get("TOKEN")
+    token = "YOUR_TOKEN"
     if not token:
-        logger.critical("Token not found in config.")
+        logger.critical("Token not found.")
         exit(1)
     try:
         client.run(token, log_handler=handler, log_formatter=formatter)
     except LoginFailure:
         logger.critical("Invalid token, restart the program.")
-        config["TOKEN"] = ""
-        with open("config.json", "w") as f:
-            dump(config, f, indent=4)
