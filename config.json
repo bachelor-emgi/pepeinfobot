@@ -2,6 +2,8 @@
     "PRESENCE": "online",
     "balance_id": 1260500212628066316,
     "toad_tavern_id": 1260497310010310756,
+    "time_active": 29,
+    "time_announcements": 180,
     "announcements": [
         {
             "Text": "New to Pepecoin? Find out what it is in <#1195861340347170877>",
