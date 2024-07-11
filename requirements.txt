@@ -3,3 +3,4 @@ art
 aiohttp[speedups]
 ujson
 questionary
+requests
