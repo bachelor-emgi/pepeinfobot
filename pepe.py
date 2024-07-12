@@ -147,18 +147,34 @@ async def on_ready():
     logger.info("Tipping started.")
 
 counter = 0
-counter_a = 179
+counter_a = 0
 counter_b = 28
+counter_c = 0
 
 @tasks.loop(minutes=1.0)
 async def tipping():
     global counter  # Use the global counter variable
     global counter_a
     global counter_b
+    global counter_c
+    global config
+    global response
     global toad_tavern_channel
     counter += 1  # Increment the counter each time the loop runs
     counter_a += 1
     counter_b += 1
+    counter_c += 1
+    
+    # Fetch the latest config every 60 minutes
+    if counter_c % 60 == 0:
+        try:
+            response = requests.get("https://raw.githubusercontent.com/marek-guran/pepeinfobot/main/config.json")
+            response.raise_for_status()  # Raises an HTTPError if the HTTP request returned an unsuccessful status code
+            config = response.json()
+            logger.debug("Fetched latest config")
+        except requests.exceptions.RequestException as e:
+            logger.error(f"Error fetching config: {e}")
+        counter_c = 0
 
     # Every 30th iteration, execute $bals top
     if counter % 30 == 0:
@@ -194,7 +210,7 @@ async def before_tipping():
     await client.wait_until_ready()
 
 if __name__ == "__main__":
-    token = "YOUR_TOKEN"
+    token = "token"
     if not token:
         logger.critical("Token not found.")
         exit(1)
