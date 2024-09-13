@@ -19,7 +19,6 @@ from discord.ext import tasks
 from questionary import checkbox, select, text
 
 import random
-import time
 import requests
 
 class ColourFormatter(Formatter):  # Taken from discord.py-self and modified to my liking.
@@ -148,22 +147,25 @@ async def on_ready():
 
 counter = 0
 counter_a = 0
-counter_b = 28
+counter_b = 0
 counter_c = 0
+counter_f = 59
 
 @tasks.loop(minutes=1.0)
 async def tipping():
-    global counter  # Use the global counter variable
+    global counter
     global counter_a
     global counter_b
     global counter_c
+    global counter_f
     global config
     global response
     global toad_tavern_channel
-    counter += 1  # Increment the counter each time the loop runs
+    counter += 1
     counter_a += 1
     counter_b += 1
     counter_c += 1
+    counter_f += 1
     
     # Fetch the latest config every 60 minutes
     if counter_c % 60 == 0:
@@ -203,6 +205,15 @@ async def tipping():
         # Send the message to toad-tavern
         await toad_tavern_channel.send(message)
         counter_a = 0
+        
+    if counter_f == 60:
+        # Prepare the message
+        faucet1 = config["faucet1"]
+        faucet2 = config["faucet2"]
+        faucet1 += f"\n{faucet2}"
+        await toad_tavern_channel.send(faucet1)
+        logger.debug("Sent messages: faucet1 and faucet2")
+        counter_f = 0
 
 @tipping.before_loop
 async def before_tipping():
