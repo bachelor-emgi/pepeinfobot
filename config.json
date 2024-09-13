@@ -4,6 +4,8 @@
     "toad_tavern_id": 1203748781590577222,
     "time_active": 29,
     "time_announcements": 180,
+    "faucet1": "# <:Pepe_King:1212645776975732767> Hourly reminder that Pepecoin has Faucets! <:Pepe_money:1208212886606979093>",
+    "faucet2": "[Pepeblocks]( <https://faucet.pepeblocks.com/> ), [Ravener]( <https://pepe.ravener.is-a.dev/> )",
     "announcements": [
         {
             "Text": "New to Pepecoin? Find out what it is in <#1195861340347170877>",
@@ -67,10 +69,6 @@
         },
         {
             "Text": "Did you know we have Telegram group? Oh yes! And we  also have a Pepecoin tip bot there! Join here: [Pepecoin]( https://t.me/PepecoinGroup )",
-            "Image": ""
-        },
-        {
-            "Text": "Pepecoin has faucet! Claim your free pepe at [Pepeblocks]( <https://faucet.pepeblocks.com/> )",
             "Image": ""
         }
     ],
