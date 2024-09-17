@@ -147,7 +147,7 @@ async def on_ready():
 
 counter = 0
 counter_a = 0
-counter_b = 0
+counter_b = 28
 counter_c = 0
 
 @tasks.loop(minutes=1.0)
