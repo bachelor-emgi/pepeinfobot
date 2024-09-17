@@ -149,7 +149,6 @@ counter = 0
 counter_a = 0
 counter_b = 0
 counter_c = 0
-counter_f = 59
 
 @tasks.loop(minutes=1.0)
 async def tipping():
@@ -157,7 +156,6 @@ async def tipping():
     global counter_a
     global counter_b
     global counter_c
-    global counter_f
     global config
     global response
     global toad_tavern_channel
@@ -165,7 +163,6 @@ async def tipping():
     counter_a += 1
     counter_b += 1
     counter_c += 1
-    counter_f += 1
     
     # Fetch the latest config every 60 minutes
     if counter_c % 60 == 0:
@@ -205,15 +202,6 @@ async def tipping():
         # Send the message to toad-tavern
         await toad_tavern_channel.send(message)
         counter_a = 0
-        
-    if counter_f == 60:
-        # Prepare the message
-        faucet1 = config["faucet1"]
-        faucet2 = config["faucet2"]
-        faucet1 += f"\n{faucet2}"
-        await toad_tavern_channel.send(faucet1)
-        logger.debug("Sent messages: faucet1 and faucet2")
-        counter_f = 0
 
 @tipping.before_loop
 async def before_tipping():
@@ -221,7 +209,7 @@ async def before_tipping():
     await client.wait_until_ready()
 
 if __name__ == "__main__":
-    token = "token"
+    token = "TOKEN"
     if not token:
         logger.critical("Token not found.")
         exit(1)
