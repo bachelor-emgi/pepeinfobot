@@ -6,6 +6,10 @@
     "time_announcements": 180,
     "announcements": [
         {
+            "Text": " # Ever wanted to earn Pepecoins by playing games? [Pepelum]( <https://pepelum.site/floppypep/> ) has one of the first Pepecoin games! You can earn by playing some Pepe!",
+            "Image": "https://cdn.discordapp.com/attachments/1260495370362814468/1287447127466709092/splash.png?ex=66f19412&is=66f04292&hm=e7e59fa2920ac15d8d377c914581232bbc0fd0d6576a43a5c39447d5093a7eab&"
+        },
+        {
             "Text": " # <:Pepe_King:1212645776975732767> Reminder that Pepecoin has Faucets! <:Pepe_money:1208212886606979093> ",
             "Image": " [Pepeblocks]( <https://faucet.pepeblocks.com/> ), [Ravener]( <https://pepe.ravener.is-a.dev/> ) "
         },
