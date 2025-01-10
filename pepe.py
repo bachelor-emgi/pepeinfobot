@@ -139,8 +139,10 @@ client = Client(
 async def on_ready():
     global channel
     global toad_tavern_channel
+    global goon_market_channel
     channel = client.get_channel(config["balance_id"])
     toad_tavern_channel = client.get_channel(config["toad_tavern_id"])
+    goon_market_channel = client.get_channel(config["goon_market_id"])
     logger.info(f"Logged in as {client.user.name}#{client.user.discriminator}")
     tipping.start()
     logger.info("Tipping started.")
@@ -149,6 +151,7 @@ counter = 0
 counter_a = 0
 counter_b = 28
 counter_c = 0
+counter_g = 0
 
 @tasks.loop(minutes=1.0)
 async def tipping():
@@ -156,13 +159,16 @@ async def tipping():
     global counter_a
     global counter_b
     global counter_c
+    global counter_g
     global config
     global response
     global toad_tavern_channel
+    global goon_market_channel
     counter += 1
     counter_a += 1
     counter_b += 1
     counter_c += 1
+    counter_g += 1
     
     # Fetch the latest config every 60 minutes
     if counter_c % 60 == 0:
@@ -203,13 +209,28 @@ async def tipping():
         await toad_tavern_channel.send(message)
         counter_a = 0
 
+    if counter_g % config["time_goon"] == 0:
+        announcement = random.choice(config["goon_messages"])
+
+        # Prepare the message
+        message = announcement["Text"]
+        image_url = announcement["Image"]
+
+        # Check if there's an image URL and append it to the message
+        if image_url:
+            message += f"\n{image_url}"
+
+        # Send the message to toad-tavern
+        await goon_market_channel.send(message)
+        counter_g = 0
+
 @tipping.before_loop
 async def before_tipping():
     logger.info("Waiting for bot to be ready...")
     await client.wait_until_ready()
 
 if __name__ == "__main__":
-    token = "TOKEN"
+    token = ""
     if not token:
         logger.critical("Token not found.")
         exit(1)
