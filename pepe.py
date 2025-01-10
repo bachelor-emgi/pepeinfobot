@@ -140,6 +140,9 @@ async def on_ready():
     global channel
     global toad_tavern_channel
     global goon_market_channel
+    if "balance_id" not in config or "toad_tavern_id" not in config or "goon_market_id" not in config:
+        logger.critical("Required configuration keys are missing.")
+        return
     channel = client.get_channel(config["balance_id"])
     toad_tavern_channel = client.get_channel(config["toad_tavern_id"])
     goon_market_channel = client.get_channel(config["goon_market_id"])

@@ -66,15 +66,12 @@
         {
             "Text": "Anyone can drop coins, even a small amount is welcome",
             "Image": ""
-<<<<<<< HEAD
         }
     ],
     "goon_messages": [
         {
             "Text": " ### Warning! <:Pepe_police:1196127014936133763> ",
             "Image": "> Goon Market chat stays here! You are not allowed to move goon theme to other channels as it will be considered intentional rules breaking."
-=======
->>>>>>> bca707bb6ca954b2ba22bda7a3082d8d4a2942a2
         }
     ],
     "emojis": [
