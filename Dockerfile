@@ -1,11 +1,8 @@
-# Use the official Python image from the Docker Hub
-FROM python:3.9-slim
+# Use the official Python image based on Alpine from the Docker Hub
+FROM python:3.9-alpine
 
 # Set the working directory in the container
 WORKDIR /app
-
-# Install git
-RUN apt-get update && apt-get install -y git && rm -rf /var/lib/apt/lists/*
 
 # Copy the current directory contents into the container at /app
 COPY . /app
